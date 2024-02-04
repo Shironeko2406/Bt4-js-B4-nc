@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        input {
+            padding: 8px;
+        }
+
+        #result {
+            margin-top: 20px;
+        }
+    </style>
+    <title>Xử lý Ngày</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Xử lý Ngày</h1>
+        <form id="dateForm">
+            <label for="inputDate">Nhập Ngày:</label>
+            <input type="date" id="inputDate" placeholder="DD/MM/YYYY" required>
+            <button type="button" onclick="findNextAndPrevDate()">Tìm Ngày Kế Tiếp/Trước Đó</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script>
+        function findNextAndPrevDate() {
+            // Lấy giá trị ngày từ trường input
+            var inputDate = document.getElementById('inputDate').value;
+
+            // Kiểm tra nếu ngày không hợp lệ
+            if (!isValidDate(inputDate)) {
+                document.getElementById('result').innerHTML = 'Ngày không hợp lệ. Vui lòng nhập lại.';
+                return;
+            }
+
+            // Chuyển đổi ngày thành đối tượng Date
+            var currentDate = new Date(inputDate);
+
+            // Tìm ngày kế tiếp và ngày trước đó
+            var nextDate = new Date(currentDate);
+            nextDate.setDate(currentDate.getDate() + 1);
+
+            var prevDate = new Date(currentDate);
+            prevDate.setDate(currentDate.getDate() - 1);
+
+            // Hiển thị kết quả
+            document.getElementById('result').innerHTML = 'Ngày kế tiếp: ' + formatDate(nextDate) + '<br>Ngày trước đó: ' + formatDate(prevDate);
+        }
+
+        function isValidDate(dateString) {
+            // Kiểm tra xem chuỗi ngày có hợp lệ không
+            var regex = /^\d{4}-\d{2}-\d{2}$/;
+            return regex.test(dateString);
+        }
+
+        function formatDate(date) {
+            // Chuyển đối tượng Date thành chuỗi ngày tháng năm
+            var dd = String(date.getDate()).padStart(2, '0');
+            var mm = String(date.getMonth() + 1).padStart(2, '0');
+            var yyyy = date.getFullYear();
+
+            return dd + '-' + mm + '-' + yyyy;
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đọc số tiếng Việt</title>
+    <script>
+        function readNumbersInVietnamese() {
+            // Lấy giá trị từ các trường input
+            var number1 = parseInt(document.getElementById('number1').value);
+            var number2 = parseInt(document.getElementById('number2').value);
+            var number3 = parseInt(document.getElementById('number3').value);
+
+            // Kiểm tra xem có phải là số nguyên không
+            if (isNaN(number1) || isNaN(number2) || isNaN(number3)) {
+                document.getElementById('result').innerHTML = 'Vui lòng nhập 3 số nguyên.';
+                return;
+            }
+
+            // Gọi hàm chuyển đổi số sang chữ
+            var resultText = 'Số thứ nhất: ' + convertToVietnamese(number1) + '<br>';
+            resultText += 'Số thứ hai: ' + convertToVietnamese(number2) + '<br>';
+            resultText += 'Số thứ ba: ' + convertToVietnamese(number3);
+
+            // Hiển thị kết quả
+            document.getElementById('result').innerHTML = resultText;
+        }
+        function convertToVietnamese(number) {
+            // Mảng chứa các từ đọc số từ 0 đến 9
+            var words = ['Không', 'Một', 'Hai', 'Ba', 'Bốn', 'Năm', 'Sáu', 'Bảy', 'Tám', 'Chín'];
+
+            // Mảng chứa các từ đọc số hàng chục
+            var tensWords = ['', 'Mười', 'Hai Mươi', 'Ba Mươi', 'Bốn Mươi', 'Năm Mươi', 'Sáu Mươi', 'Bảy Mươi', 'Tám Mươi', 'Chín Mươi'];
+
+            // Mảng chứa các từ đọc số hàng trăm
+            var hundredsWords = ['', 'Một Trăm', 'Hai Trăm', 'Ba Trăm', 'Bốn Trăm', 'Năm Trăm', 'Sáu Trăm', 'Bảy Trăm', 'Tám Trăm', 'Chín Trăm'];
+
+            // Kiểm tra số đầu vào có duy nhất là số 0 hay không
+            if (number === 0) {
+                return 'Không';
+            }
+
+            // Chuyển đổi số thành chữ
+            if (number > 0 && number <= 999999) {
+                var result = '';
+
+                // Xử lý hàng nghìn
+                var thousands = Math.floor(number / 1000);
+                if (thousands > 0) {
+                    // Xử lý hàng trăm của hàng nghìn
+                    result += hundredsWords[Math.floor(thousands / 100)] + ' ';
+
+                    // Xử lý hàng chục của hàng nghìn
+                    result += tensWords[Math.floor((thousands % 100) / 10)];
+
+                    // Xử lý hàng đơn vị của hàng nghìn
+                    if (thousands % 10 > 0) {
+                        result += ' ' + words[thousands % 10] + ' Nghìn ';
+                    } else {
+                        result += ' Nghìn ';
+                    }
+                }
+
+                // Xử lý hàng đơn vị
+                var units = number % 1000;
+                result += hundredsWords[Math.floor(units / 100)] + ' ';
+
+                // Xử lý hàng chục
+                result += tensWords[Math.floor((units % 100) / 10)];
+
+                // Xử lý hàng đơn vị
+                if (units % 10 > 0) {
+                    result += ' ' + words[units % 10];
+                }
+
+                return result.trim();
+            } else {
+                return 'Số không hợp lệ';
+            }
+        }
+
+    </script>
+</head>
+
+<body>
+    <div>
+        <h1>Đọc số tiếng Việt</h1>
+        <label for="number1">Nhập số thứ nhất:</label>
+        <input type="number" id="number1" required>
+        <br>
+        <label for="number2">Nhập số thứ hai:</label>
+        <input type="number" id="number2" required>
+        <br>
+        <label for="number3">Nhập số thứ ba:</label>
+        <input type="number" id="number3" required>
+        <br>
+        <button type="button" onclick="readNumbersInVietnamese()">Xem kết quả</button>
+        <br>
+        <div id="result"></div>
+    </div>
+</body>
+
+</html>
